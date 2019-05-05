@@ -17,9 +17,10 @@ int main(void)
 	while(1){
 		hb++;
 		read_Imu();																						//swt 789 控制角度 角速度 加速度	
-		imu_find_point();																			//主要的imu逻辑
+		imu_find_point();																			//主要的imu逻辑 id为单数的imu触发数据
+		imu_find_point2();																		//id为双数的imu触发数据
 		send_ANO();																						//匿名打印
-//		if(swt[0]) printf("\r\r run time %13d\r\n",hb);			//show systerm runing
+		com_F7();																							//传输到F7
 		if(hb%2) read_Hx711();																//swt 0123控制hx711 1234
 	}
 	

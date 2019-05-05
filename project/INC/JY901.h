@@ -160,10 +160,12 @@ extern struct SLonLat 		stcLonLat;
 extern struct SGPSV 		stcGPSV; 
 extern struct IMU			stcIMU[imuNum];
 extern unsigned char allowAddeId[imuNum];
+extern unsigned char state_F,state_S;
 void CopeSerialData(unsigned char ucData);
 void CopeSerialData2(unsigned char ucData);
 void 	ModbusRWReg(unsigned short Addr, unsigned short R_W, unsigned short usReg, unsigned short usRegNumDate);
 void 	ModbusRWReg2(unsigned short Addr, unsigned short R_W, unsigned short usReg, unsigned short usRegNumDate);
 void read_Imu(void);
 void imu_find_point(void);
+void imu_find_point2(void);
 #endif

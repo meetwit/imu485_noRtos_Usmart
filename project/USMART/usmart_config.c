@@ -16,7 +16,8 @@ struct _m_usmart_nametab usmart_nametab[]=
 	(void*)write_addr,"void write_addr(u32 addr,u32 val)",	 
 #endif		   
  	(void*)swt_f,"swt_f(int num,int val)",	 	
- 	(void*)swt_help,"swt_help()",	  	 			  	    
+ 	(void*)swt_help,"swt_help()",	  	
+ 	(void*)swt_check,"swt_check()",	  	 			  	    
 };						  
 ///////////////////////////////////END///////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////
