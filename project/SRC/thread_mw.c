@@ -17,7 +17,7 @@ void com_F7(void){
 	float temp_N[2]={0};
 	temp_N[1] = generatrForce(state_F,stcIMU[3].x_Angle,stcIMU[3].x_w);
 	ano_o_F2[9] = state_F;
-	if(state_F==1){									//状态切换
+	if(state_F==1){											//状态切换
 		state_F=12;
 	}
 	else
@@ -50,7 +50,7 @@ void com_F7(void){
 		state_S=41;
 	}
 	
-	if(state_F==12||state_F==23){
+	if(state_F==12||state_F==23){					//标记切换
 		target_N[3] = temp_N[1];
 		target_N[1] = MinN;
 	}
@@ -67,7 +67,7 @@ void com_F7(void){
 		target_N[2] = MinN;
 	}
 	
-	ano_o_F3[0] = target_N[0];
+	ano_o_F3[0] = target_N[0];						//输出到匿名的F3 0123
 	ano_o_F3[1] = target_N[1];
 	ano_o_F3[2] = target_N[2];
 	ano_o_F3[3] = target_N[3];
@@ -332,12 +332,20 @@ float generatrForce(int flag, float angle, float v){
 	return N;
 }
 
+/*
+函数名：generatrForce2
+参 	数：int flag, 		状态机状态
+				float angle,	角度 
+				float v				角速度
+返回值：(float)				目标力
+*/
 float generatrForce2(int flag, float angle, float v){
-	static float max_angle=110,min_angle=60,mid2_angle=85,mid4_angle=85;		//预定义大概的角度范围，后面采用实时测量值
+	//预定义大概的角度范围，后面采用实时测量值，仅第一步有用
+	static float max_angle=110,min_angle=60,mid2_angle=85,mid4_angle=85;		
 	float k12,k23,k34,k41,N;	
 	static u8 cout=0;
 
-	if(flag==1){													//记录各个位置角度
+	if(flag==1){															//记录各个位置角度
 		max_angle = angle;
 		N = MinN;
 	}else if(flag==3){
@@ -345,20 +353,20 @@ float generatrForce2(int flag, float angle, float v){
 		N = MinN;
 	}else if(flag==2){
 		mid2_angle = angle;
-		if(v>-50&&v<50) {										//判断是否原地停下
+		if(v>-50&&v<50) {												//判断是否原地停下
 			cout = 11;
 			return MinN;
 		}
 		N = MaxN;
 	}else if(flag==4){
-		mid4_angle = angle;
-		if(v>-50&&v<50) {										//判断是否原地停下
+		mid4_angle = angle;	
+		if(v>-50&&v<50) {												//判断是否原地停下
 			cout = 11;
 			return MinN;
 		}
 		N = MaxN;
 	}
-	if(-10<v&&v<10){											//判断是否停下，可任意位置
+	if(-10<v&&v<10){													//判断是否停下，可任意位置
 		cout++;
 		if(cout>200){
 			cout = 11;
@@ -366,46 +374,46 @@ float generatrForce2(int flag, float angle, float v){
 	}else{
 		cout=0;
 	}
-	if(cout>10){													//满足停下，可任意位置
+	if(cout>10){															//满足停下，可任意位置
 		return MinN;
 	}
 	
-	if(max_angle - min_angle<20){						//判断角度是否过小
+	if(max_angle - min_angle<20){							//判断角度是否过小
 		return MinN;
 	}
-	if(max_angle - mid2_angle<10){
+	if(max_angle - mid2_angle<10){						//判断角度是否过小
 		return MinN;
 	}
-	if(mid2_angle - min_angle<10){
+	if(mid2_angle - min_angle<10){						//判断角度是否过小
 		return MinN;
 	}
-	if(mid4_angle - min_angle<10){
+	if(mid4_angle - min_angle<10){						//判断角度是否过小
 		return MinN;
 	}
-	if(max_angle - mid4_angle<10){
+	if(max_angle - mid4_angle<10){						//判断角度是否过小
 		return MinN;
 	}
-	k12 = MaxN/(max_angle-mid2_angle);			//计算各段斜率
+	k12 = MaxN/(max_angle-mid2_angle);				//计算各段斜率
 	k23 = MaxN/(mid2_angle-min_angle);
 	k34 = MaxN/(mid4_angle-min_angle);
 	k41 = MaxN/(max_angle-mid4_angle);
 	
 	if(flag==12){
-			N=k12*(max_angle-angle);						//计算12段目标力
+			N=k12*(max_angle-angle);							//计算12段目标力
 	}
 	else
 	if(flag==23){
-			N=MaxN - k23*(mid2_angle-angle);		//计算23段目标力
+			N=MaxN - k23*(mid2_angle-angle);			//计算23段目标力
 	}
 	else
 	if(flag==34){
-			N=k34*(angle-min_angle);						//计算34段目标力
+			N=k34*(angle-min_angle);							//计算34段目标力
 	}
 	else
 	if(flag==41){
-			N=MaxN - k41*(angle-mid4_angle);		//计算41段目标力
+			N=MaxN - k41*(angle-mid4_angle);			//计算41段目标力
 	}
-	if(N>MaxN) N = MaxN;										//限制目标力输出
+	if(N>MaxN) N = MaxN;											//限制目标力输出
 	if(N<MinN) N = MinN;
 	return N;
 }
