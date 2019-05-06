@@ -26,7 +26,8 @@ B处：修改为你字节发送函数
 #define usart_send_char PcTx_Byte4 
 
 
-float ano_o[10]={0};
+float ano_o_F2[10]={0};
+float ano_o_F3[10]={0};
 /*
 函数名：ANO_report
 参	数：u8 func 						功能字,自定义，0xF1-0xFF

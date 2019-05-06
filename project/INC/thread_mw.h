@@ -6,7 +6,7 @@
 #include "string.h"
 
 extern u8 swt[10]; //全局一些状态开关的控制
-
+extern float target_N[4];
 
 void com_F7(void);
 void send_ANO(void);

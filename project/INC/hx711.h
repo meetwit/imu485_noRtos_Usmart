@@ -12,6 +12,8 @@
 #define DAT4 PFin(6)
 #define SCK4 PFout(7)
 
+extern float hx711_N[4];
+	
 void hx711_init(void);
 int32_t ReadCountA(void);
 int32_t ReadCountB(void);

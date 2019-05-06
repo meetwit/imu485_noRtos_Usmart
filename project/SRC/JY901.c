@@ -180,9 +180,9 @@ void CopeSerialData(unsigned char ucData)
 			
 			//ANO printf
 			if(swt[7]){
-				ano_o[index%2+4] = stcIMU[index].x_Angle;
+				ano_o_F2[index%2+4] = stcIMU[index].x_Angle;
 			}else{
-				ano_o[index%2+4] = 0;
+				ano_o_F2[index%2+4] = 0;
 			}
 			
 		}else if(stcIMU[index].addrReg==AX){		//º”ÀŸ∂»
@@ -228,9 +228,9 @@ void CopeSerialData(unsigned char ucData)
 			
 			//ANO printf
 			if(swt[8]){
-				ano_o[index%2+6] = stcIMU[index].x_w;
+				ano_o_F2[index%2+6] = stcIMU[index].x_w;
 			}else{
-				ano_o[index%2+6] = 0;
+				ano_o_F2[index%2+6] = 0;
 			}
 			
 		}
@@ -341,9 +341,9 @@ void CopeSerialData2(unsigned char ucData)
 			
 			//ANO printf
 			if(swt[7]){
-				ano_o[index%2+4] = stcIMU[index].x_Angle;
+				ano_o_F2[index%2+4] = stcIMU[index].x_Angle;
 			}else{
-				ano_o[index%2+4] = 0;
+				ano_o_F2[index%2+4] = 0;
 			}
 			
 			
@@ -390,9 +390,9 @@ void CopeSerialData2(unsigned char ucData)
 			
 			//ANO printf
 			if(swt[8]){
-				ano_o[index%2+6] = stcIMU[index].x_w;
+				ano_o_F2[index%2+6] = stcIMU[index].x_w;
 			}else{
-				ano_o[index%2+6] = 0;
+				ano_o_F2[index%2+6] = 0;
 			}
 			
 		}

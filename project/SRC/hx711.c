@@ -1,6 +1,9 @@
 #include "hx711.h"
 #include "stm32f4xx.h"
 
+
+	float hx711_N[4] = {0};
+	
 void hx711_init(void){
 	RCC ->AHB1ENR |= (0x1<<5);//GPIOFÊ¹ÄÜ
 	GPIO_Set(GPIOF,PIN0|PIN2|PIN4|PIN6,GPIO_MODE_IN,GPIO_OTYPE_PP,GPIO_SPEED_100M,GPIO_PUPD_PU); //in
@@ -166,16 +169,16 @@ int32_t ReadCountD(void)
 
 void read_Hx711(void){
 	uint32_t hx711_ans[4] = {0};
-	float hx711_N[4] = {0};
 	 
 		if(swt[1]){
 			hx711_ans[0]=ReadCountA();
 			hx711_N[0] = hx711_ans[0]*50/8388608.0*2.55*9.8-1249.5;
 //			printf("A=%d,%f\r\n",hx711_ans[0],hx711_N[0]);
 			if(hx711_ans[0])
-				ano_o[0]=hx711_N[0];
+				ano_o_F2[0]=hx711_N[0];
 		}else{
-				ano_o[0]=0;
+				hx711_N[0] = 0;
+				ano_o_F2[0]=0;
 		}
 		
 		if(swt[2]){
@@ -183,9 +186,10 @@ void read_Hx711(void){
 			hx711_N[1] = hx711_ans[1]*50/8388608.0*2.55*9.8-1249.5;
 //			printf("B=%d,%f\r\n",hx711_ans[1],hx711_N[1]);
 			if(hx711_ans[1])
-			ano_o[1]=hx711_N[1];
+				ano_o_F2[1]=hx711_N[1];
 		}else{
-				ano_o[1]=0;
+				hx711_N[1] = 0;
+				ano_o_F2[1]=0;
 		}
 		
 		if(swt[3]){
@@ -193,9 +197,10 @@ void read_Hx711(void){
 			hx711_N[2] = hx711_ans[2]*50/8388608.0*2.55*9.8-1249.5;
 //			printf("C=%d,%f\r\n",hx711_ans[2],hx711_N[2]);
 			if(hx711_ans[2])
-			ano_o[2]=hx711_N[2];
+				ano_o_F2[2]=hx711_N[2];
 		}else{
-				ano_o[2]=0;
+				hx711_N[2] = 0;
+				ano_o_F2[2]=0;
 		}
 		
 		if(swt[4]){
@@ -203,9 +208,10 @@ void read_Hx711(void){
 			hx711_N[3] = hx711_ans[3]*50/8388608.0*2.55*9.8-1249.5;
 //			printf("D=%d,%f\r\n\r\n",hx711_ans[3],hx711_N[3]);
 			if(hx711_ans[3])
-			ano_o[3]=hx711_N[3];
+				ano_o_F2[3]=hx711_N[3];
 		}else{
-				ano_o[3]=0;
+				hx711_N[3] = 0;
+				ano_o_F2[3]=0;
 		}
 		
 }
