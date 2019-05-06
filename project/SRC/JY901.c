@@ -454,7 +454,7 @@ void read_Imu(void){
 		
 		if(swt[9]){
 			ModbusRWReg(allowAddeId[3],imuRead,AX,3);
-			ModbusRWReg2(allowAddeId[4],imuRead,AX,3);
+			ModbusRWReg(allowAddeId[4],imuRead,AX,3);
 			delay_ms(3);
 		}
 	

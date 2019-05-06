@@ -279,34 +279,80 @@ float generatrForce(int flag, float angle, float v){
 }
 
 float generatrForce2(int flag, float angle, float v){
-	static float max_angle=130,min_angle=70,mid_angle=100;
-	float MaxN=300;
-	float k1,k2,N;
-    //×î´óÖµ
+	static float max_angle=110,min_angle=60,mid2_angle=85,mid4_angle=85;
+	float MaxN=300,MinN=10;
+	float k12,k23,k34,k41,N;
+	static u8 cout=0;
+
 	if(flag==1){
 		max_angle = angle;
-		N = 0;
+		N = MinN;
 	}else if(flag==3){
 		min_angle = angle;
-		N = 0;
+		N = MinN;
 	}else if(flag==2){
-		mid_angle = angle;
+		mid2_angle = angle;
+		if(v>-50&&v<50) {
+			cout = 11;
+			return MinN;
+		}
 		N = MaxN;
 	}else if(flag==4){
-		mid_angle = angle;
+		mid4_angle = angle;
+		if(v>-50&&v<50) {
+			cout = 11;
+			return MinN;
+		}
 		N = MaxN;
 	}
-	k1 = MaxN/(max_angle-mid_angle);
-	k2 = MaxN/(mid_angle-min_angle);
+	if(-10<v&&v<10){
+		cout++;
+		if(cout>200){
+			cout = 11;
+		}
+	}else{
+		cout=0;
+	}
+	if(cout>10){
+		return MinN;
+	}
 	
-	if(flag==12||flag==41){
-			N=k1*(max_angle-angle);
+	if(max_angle - min_angle<20){
+		return MinN;
+	}
+	if(max_angle - mid2_angle<10){
+		return MinN;
+	}
+	if(mid2_angle - min_angle<10){
+		return MinN;
+	}
+	if(mid4_angle - min_angle<10){
+		return MinN;
+	}
+	if(max_angle - mid4_angle<10){
+		return MinN;
+	}
+	k12 = MaxN/(max_angle-mid2_angle);
+	k23 = MaxN/(mid2_angle-min_angle);
+	k34 = MaxN/(mid4_angle-min_angle);
+	k41 = MaxN/(max_angle-mid4_angle);
+	
+	if(flag==12){
+			N=k12*(max_angle-angle);
 	}
 	else
-	if(flag==23||flag==34){
-			N=k2*(angle-min_angle);
+	if(flag==23){
+			N=MaxN - k23*(mid2_angle-angle);
+	}
+	else
+	if(flag==34){
+			N=k34*(angle-min_angle);
+	}
+	else
+	if(flag==41){
+			N=MaxN - k41*(angle-mid4_angle);
 	}
 	if(N>MaxN) N = MaxN;
-	if(N<0) N = 0;
+	if(N<MinN) N = MinN;
 	return N;
 }
