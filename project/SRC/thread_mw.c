@@ -3,6 +3,7 @@
 #define MaxN 300
 #define MinN 10
 
+
 /*							 0 1 2 3 4 5 6 7 8 9*/
 uint8_t swt[10]={1,1,1,1,1,1,1,1,1,0}; //全局一些状态开关的控制
 float target_N[4]={10,10,10,10};			//0:双数髋前 1：单数髋前 2:双数髋后 3：单数髋后 
@@ -10,7 +11,19 @@ float target_N[4]={10,10,10,10};			//0:双数髋前 1：单数髋前 2:双数髋后 3：单数髋
 void send_F7(void){
 //将目标力 target_N[4]，测量力 hx711_N[4] 通过串口5发送至F7	float
 //串口5的字节发送函数	PcTx_Byte5(u8 data)		unsigned char
-	;
+	PcTx_Byte5('T');
+	
+	PcTx_Byte5((u8)(hx711_N[0]/2));
+	PcTx_Byte5((u8)(hx711_N[1]/2));
+	PcTx_Byte5((u8)(hx711_N[2]/2));
+	PcTx_Byte5((u8)(hx711_N[3]/2));
+	
+	PcTx_Byte5((u8)(target_N[0]/2));
+	PcTx_Byte5((u8)(target_N[1]/2));
+	PcTx_Byte5((u8)(target_N[2]/2));
+	PcTx_Byte5((u8)(target_N[3]/2));
+	
+	PcTx_Byte5('E');
 }
 
 void com_F7(void){
@@ -91,13 +104,13 @@ void send_ANO(void){
 void swt_f(int num,int val){
 		swt[num] = val;
 		switch(num){
-			case 0 :
-				if(val){
-					rt_kprintf("全局时钟打印开启\r\n");
-				}else{
-					rt_kprintf("全局时钟打印关闭\r\n");
-				}
-			break;
+//			case 0 :
+//				if(val){
+//					rt_kprintf("全局时钟打印开启\r\n");
+//				}else{
+//					rt_kprintf("全局时钟打印关闭\r\n");
+//				}
+//			break;
 				
 			case 1 :
 				if(val){
@@ -141,9 +154,9 @@ void swt_f(int num,int val){
 				
 			case 6 :
 				if(val){
-					rt_kprintf("开启F4&F7通信\r\n");
+					rt_kprintf("F4主动发送数据到F7\r\n");
 				}else{
-					rt_kprintf("关闭F4&F7通信\r\n");
+					rt_kprintf("F4被动发送数据到F7\r\n");
 				}
 			break;
 				
@@ -189,8 +202,8 @@ void swt_help(){
 		rt_kprintf("swt_f 4 1 拉力传感器com4开启测量\r\n");
 		rt_kprintf("swt_f 5 0 匿名上位机关闭显示\r\n");
 		rt_kprintf("swt_f 5 1 匿名上位机开启显示\r\n");
-		rt_kprintf("swt_f 6 0 关闭F4&F7通信\r\n");
-		rt_kprintf("swt_f 6 1 开启F4&F7通信\r\n");
+		rt_kprintf("swt_f 6 0 F4被动发送数据到F7\r\n");
+		rt_kprintf("swt_f 6 1 F4主动发送数据到F7\r\n");
 		rt_kprintf("swt_f 7 0 imu角度关闭测量\r\n");
 		rt_kprintf("swt_f 7 1 imu角度开启测量\r\n");
 		rt_kprintf("swt_f 8 0 imu角速度关闭测量\r\n");
@@ -200,12 +213,12 @@ void swt_help(){
 }
 
 void swt_check(){
-		rt_kprintf("\r\nr\n状态查询：\r\n");
-		if(swt[0]){
-					rt_kprintf("全局时钟打印已开启\r\n");
-				}else{
-					rt_kprintf("全局时钟打印已关闭\r\n");
-				}
+		rt_kprintf("\r\n\n状态查询：\r\n");
+//		if(swt[0]){
+//					rt_kprintf("全局时钟打印已开启\r\n");
+//				}else{
+//					rt_kprintf("全局时钟打印已关闭\r\n");
+//				}
 		if(swt[1]){
 					rt_kprintf("拉力传感器com1已开启测量\r\n");
 				}else{
@@ -232,9 +245,9 @@ void swt_check(){
 					rt_kprintf("匿名上位机已关闭显示\r\n");
 				}
 		if(swt[6]){
-					rt_kprintf("已开启F4&F7通信\r\n");
+					rt_kprintf("F4主动发送数据到F7\r\n");
 				}else{
-					rt_kprintf("已关闭F4&F7通信\r\n");
+					rt_kprintf("F4被动发送数据到F7\r\n");
 				}
 		if(swt[7]){
 					rt_kprintf("imu角度已开启测量\r\n");

@@ -2,7 +2,7 @@
 #include "stm32f4xx.h"
 
 
-	float hx711_N[4] = {0};
+	float hx711_N[4] = {0};			//测量力
 	
 void hx711_init(void){
 	RCC ->AHB1ENR |= (0x1<<5);//GPIOF使能

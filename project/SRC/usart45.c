@@ -75,19 +75,22 @@ void PcTx_Byte5(u8 Tx_data5){
 
 
 
-void USART5_IRQHandler(void)
+void UART5_IRQHandler(void)
 {
 	u8 res;	    
 	if(UART5->SR&(1<<5))//接收到数据
 	{	 
-		res=UART5->DR; 			
-		cope_usart5(res);
+		res=UART5->DR; 		
+		if(swt[6]==0)
+		cope_uart5(res);
 	}  										
 } 
 
 
-void cope_usart5(u8 data){
-	printf("usart5 get %d",data);
+void cope_uart5(u8 data){
+	if(data=='R'){
+		send_F7();
+	}
 }
 
 
