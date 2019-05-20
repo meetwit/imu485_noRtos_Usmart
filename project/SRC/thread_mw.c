@@ -1,6 +1,6 @@
 #include "main.h"
 
-#define MaxN 300
+#define MaxN 200
 #define MinN 10
 
 
