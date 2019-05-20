@@ -11,7 +11,7 @@ int main(void)
 	RS485_Init(42,115200);					//初始化RS485 usart2
 	RS485_Init2(42,115200);					//初始化RS485 usart3
 	uart4_init(42,500000);					//匿名 500000
-	uart5_init(42,115200);					//F4<->F7 460800
+	uart5_init(42,460800);					//F4<->F7 460800
 	printf("\r\nsys init\r\n\r\n");
 	
 	while(1){

@@ -4,7 +4,14 @@
 #define MinN 10
 
 
-/*				 0 1 2 3 4 5 6 7 8 9*/
+/*
+algorithm 0 first version
+algorithm 1 计算角度到目标输出力
+
+*/
+#define algorithm 0		
+
+/*		      		 0 1 2 3 4 5 6 7 8 9*/
 uint8_t swt[10]={1,1,1,1,1,1,0,1,1,0}; //全局一些状态开关的控制
 float target_N[4]={10,10,10,10};			//0:双数髋前 1：单数髋前 2:双数髋后 3：单数髋后 
 
@@ -355,7 +362,7 @@ float generatrForce(int flag, float angle, float v){
 float generatrForce2(int flag, float angle, float v){
 	//预定义大概的角度范围，后面采用实时测量值，仅第一步有用
 	static float max_angle=110,min_angle=60,mid2_angle=85,mid4_angle=85;		
-	float k12,k23,k34,k41,N;	
+	float k12,k23,k34,k41,N,cal_max_N;	
 	static u8 cout=0;
 
 	if(flag==1){															//记录各个位置角度
@@ -366,57 +373,71 @@ float generatrForce2(int flag, float angle, float v){
 		N = MinN;
 	}else if(flag==2){
 		mid2_angle = angle;
-		if(v>-50&&v<50) {												//判断是否原地停下
-			cout = 11;
-			return MinN;
-		}
-		N = MaxN;
+//		if(v>-50&&v<50) {												//判断是否原地停下
+//			cout = 11;
+//			return MinN;
+//		}
+		N=cal_max_N;//N = MaxN;
 	}else if(flag==4){
 		mid4_angle = angle;	
-		if(v>-50&&v<50) {												//判断是否原地停下
-			cout = 11;
-			return MinN;
-		}
-		N = MaxN;
+//		if(v>-50&&v<50) {												//判断是否原地停下
+//			cout = 11;
+//			return MinN;
+//		}
+		N=cal_max_N;//N = MaxN;
 	}
-	if(-10<v&&v<10){													//判断是否停下，可任意位置，20可能更好
-		cout++;
-		if(cout>200){
-			cout = 11;
-		}
-	}else{
-		cout=0;
-	}
-	if(cout>10){															//满足停下，可任意位置
-		return MinN;
-	}
+//	if(-10<v&&v<10){													//判断是否停下，可任意位置，20可能更好
+//		cout++;
+//		if(cout>200){
+//			cout = 11;
+//		}
+//	}else{
+//		cout=0;
+//	}
+//	if(cout>10){															//满足停下，可任意位置
+//		return MinN;
+//	}
+//	
+//	if(max_angle - min_angle<20){							//判断角度是否过小
+//		return MinN;
+//	}
+//	if(max_angle - mid2_angle<10){						//判断角度是否过小
+//		return MinN;
+//	}
+//	if(mid2_angle - min_angle<10){						//判断角度是否过小
+//		return MinN;
+//	}
+//	if(mid4_angle - min_angle<10){						//判断角度是否过小
+//		return MinN;
+//	}
+//	if(max_angle - mid4_angle<10){						//判断角度是否过小
+//		return MinN;
+//	}
+
+//cal_max_N = (max_angle- min_angle)*5;
+
+//	k12 = cal_max_N/(max_angle-mid2_angle);				//计算各段斜率
+//	k23 = cal_max_N/(mid2_angle-min_angle);
+//	k34 = cal_max_N/(mid4_angle-min_angle);
+//	k41 = cal_max_N/(max_angle-mid4_angle);
 	
-	if(max_angle - min_angle<20){							//判断角度是否过小
-		return MinN;
-	}
-	if(max_angle - mid2_angle<10){						//判断角度是否过小
-		return MinN;
-	}
-	if(mid2_angle - min_angle<10){						//判断角度是否过小
-		return MinN;
-	}
-	if(mid4_angle - min_angle<10){						//判断角度是否过小
-		return MinN;
-	}
-	if(max_angle - mid4_angle<10){						//判断角度是否过小
-		return MinN;
-	}
-	k12 = MaxN/(max_angle-mid2_angle);				//计算各段斜率
-	k23 = MaxN/(mid2_angle-min_angle);
-	k34 = MaxN/(mid4_angle-min_angle);
-	k41 = MaxN/(max_angle-mid4_angle);
-	
+
+//	k12 = MaxN/(max_angle-mid2_angle);				//计算各段斜率
+//	k23 = MaxN/(mid2_angle-min_angle);
+//	k34 = MaxN/(mid4_angle-min_angle);
+//	k41 = MaxN/(max_angle-mid4_angle);
+
+	k12 = 5;
+	k23 = 5;
+	k34 = 5;
+	k41 = 5;
+
 	if(flag==12){
 			N=k12*(max_angle-angle);							//计算12段目标力
 	}
 	else
 	if(flag==23){
-			N=MaxN - k23*(mid2_angle-angle);			//计算23段目标力
+			N=cal_max_N - k23*(mid2_angle-angle);			//计算23段目标力
 	}
 	else
 	if(flag==34){
@@ -424,7 +445,7 @@ float generatrForce2(int flag, float angle, float v){
 	}
 	else
 	if(flag==41){
-			N=MaxN - k41*(angle-mid4_angle);			//计算41段目标力
+			N=cal_max_N - k41*(angle-mid4_angle);			//计算41段目标力
 	}
 	if(N>MaxN) N = MaxN;											//限制目标力输出
 	if(N<MinN) N = MinN;
