@@ -379,7 +379,7 @@ float generatrForce2(int flag, float angle, float v){
 		}
 		N = MaxN;
 	}
-	if(-10<v&&v<10){													//判断是否停下，可任意位置
+	if(-10<v&&v<10){													//判断是否停下，可任意位置，20可能更好
 		cout++;
 		if(cout>200){
 			cout = 11;
