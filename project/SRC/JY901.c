@@ -463,22 +463,22 @@ void read_Imu(void){
 
 
 void imu_find_point(void){
-	static u8 assi_time[4]={0};
+	static u16 assi_time[5]={0,0,0,0,0};
 	if(stcIMU[3].x_Angle > stcIMU[4].x_Angle){
 		if(stcIMU[3].x_w>20){
 			assi_time[0]++;
-		}
-		if(stcIMU[3].x_w<-20){
+		}else if(stcIMU[3].x_w<-20){
 			if(assi_time[0]>10){//计数
-//				PcTx_Byte5('e');
-//				ano_o[9] = 150;
+				assi_time[0]=11;
 				state_F=1;
+			assi_time[4] = 0;
 			}
 			assi_time[0] = 0;
+		}else{
+			assi_time[4]++;
 		}
 		if(assi_time[3]>10){//计数
-//				PcTx_Byte5('g');
-//				ano_o[9]=100;
+			assi_time[3]=11;
 				state_F=4;
 			}
 		assi_time[3] = 0;
@@ -486,42 +486,47 @@ void imu_find_point(void){
 	}else{
 		if(stcIMU[3].x_w>20){
 			if(assi_time[2]>10){//计数
-//				PcTx_Byte5('h');
-//				ano_o[9] = 0;
+				assi_time[2]=11;
 				state_F=3;
+			assi_time[4] = 0;
 			}
 			assi_time[2] = 0;
-		}
-		if(stcIMU[3].x_w<-20){
+		}else if(stcIMU[3].x_w<-20){
 			assi_time[2]++;
+		}else{
+			assi_time[4]++;
 		}
 		if(assi_time[1]>10){//计数
-//				PcTx_Byte5('f');
-//				ano_o[9]=80;
+			assi_time[1]=11;
 				state_F=2;
 			}
 			assi_time[1] = 0;
 			assi_time[3] ++;
 	}
+	if(assi_time[4]>20){	//计数
+		assi_time[4]=21;
+		state_F = 5;
+	}
 }
 
+
 void imu_find_point2(void){
-	static u8 assi_time[4]={0};
+	static u16 assi_time[5]={0,0,0,0,0};
 	if(stcIMU[4].x_Angle > stcIMU[3].x_Angle){
 		if(stcIMU[4].x_w>20){
 			assi_time[0]++;
-		}
-		if(stcIMU[4].x_w<-20){
+		}else if(stcIMU[4].x_w<-20){
 			if(assi_time[0]>10){//计数
-//				PcTx_Byte5('a');
-//				ano_o[8] = 110;
+				assi_time[0]=11;
 				state_S=1;
+			assi_time[4] = 0;
 			}
 			assi_time[0] = 0;
+		}else{
+			assi_time[4]++;
 		}
 		if(assi_time[3]>10){//计数
-//				PcTx_Byte5('d');
-//				ano_o[8]=70;
+			assi_time[3]=11;
 				state_S=4;
 			}
 		assi_time[3] = 0;
@@ -529,21 +534,25 @@ void imu_find_point2(void){
 	}else{
 		if(stcIMU[4].x_w>20){
 			if(assi_time[2]>10){//计数
-//				PcTx_Byte5('c');
-//				ano_o[8] = 0;
+				assi_time[2]=11;
 				state_S=3;
+			assi_time[4] = 0;
 			}
 			assi_time[2] = 0;
-		}
-		if(stcIMU[4].x_w<-20){
+		}else if(stcIMU[4].x_w<-20){
 			assi_time[2]++;
+		}else{
+			assi_time[4]++;
 		}
 		if(assi_time[1]>10){//计数
-//				PcTx_Byte5('b');
-//				ano_o[8]=50;
+			assi_time[1]=11;
 				state_S=2;
 			}
 			assi_time[1] = 0;
 			assi_time[3] ++;
+	}
+	if(assi_time[4]>20){	//计数
+		assi_time[4]=21;
+		state_S = 5;
 	}
 }
