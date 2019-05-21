@@ -301,15 +301,15 @@ float generatrForce(int flag, float angle, float v){
 		return MinN;
 	}else if(flag==2){
 		mid2_angle = angle;
-		if(v>-50&&v<50) {
-			return MinN;
-		}
+//		if(v>-50&&v<50) {
+//			return MinN;
+//		}
 		return N;
 	}else if(flag==4){
 		mid4_angle = angle;	
-		if(v>-50&&v<50) {
-			return MinN;
-		}
+//		if(v>-50&&v<50) {
+//			return MinN;
+//		}
 		return N;
 	}else if(flag==5){
 		return MinN;
@@ -356,15 +356,15 @@ float generatrForce2(int flag, float angle, float v){
 		return MinN;
 	}else if(flag==2){
 		mid2_angle = angle;
-		if(v>-50&&v<50) {
-			return MinN;
-		}
+//		if(v>-50&&v<50) {
+//			return MinN;
+//		}
 		return N;
 	}else if(flag==4){
 		mid4_angle = angle;	
-		if(v>-50&&v<50) {
-			return MinN;
-		}
+//		if(v>-50&&v<50) {
+//			return MinN;
+//		}
 		return N;
 	}else if(flag==5){
 		return MinN;
